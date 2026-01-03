@@ -1,10 +1,10 @@
-use crate::config::Config;
+use crate::{config::Config, node::Node};
 use anyhow::Result;
 use std::path::PathBuf;
 use ignore::{WalkBuilder, overrides::{OverrideBuilder}};
 
 pub fn walk(config: &Config) -> Result<Vec<PathBuf>> {
-    let mut paths = Vec::new();
+    let mut nodes = Vec::new();
 
     let mut builder = WalkBuilder::new(&config.root);
     builder.hidden(!config.include_hidden);
@@ -27,8 +27,8 @@ pub fn walk(config: &Config) -> Result<Vec<PathBuf>> {
 
     for entry in walker {
         let entry = entry?;
-        paths.push(entry.path().to_path_buf());
+        nodes.push(entry.path().to_path_buf());
     }
 
-    Ok(paths)
+    Ok(nodes)
 }
