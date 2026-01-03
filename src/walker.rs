@@ -7,6 +7,7 @@ pub fn walk(config: &Config) -> Result<Vec<PathBuf>> {
     let mut paths = Vec::new();
 
     let walker = WalkBuilder::new(&config.root)
+        .hidden(!config.include_hidden)
         .git_ignore(true)
         .git_global(true)
         .git_exclude(true)
