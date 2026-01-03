@@ -3,6 +3,7 @@ use clap::Parser;
 
 mod cli;
 mod config;
+mod walker;
 
 use cli::Cli;
 use config::Config;
@@ -11,6 +12,12 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     let config = Config::from(cli);
 
-    println!("Project root: {}", config.root.display());
+    let entries = walker::walk(&config)?;
+    println!(
+        "Project root: {} ({} entries)",
+        config.root.display(),
+        entries.len()
+    );
+
     Ok(())
 }
