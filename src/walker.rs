@@ -1,9 +1,8 @@
 use crate::{config::Config, node::Node};
 use anyhow::Result;
-use std::path::PathBuf;
-use ignore::{WalkBuilder, overrides::{OverrideBuilder}};
+use ignore::{WalkBuilder, overrides::OverrideBuilder};
 
-pub fn walk(config: &Config) -> Result<Vec<PathBuf>> {
+pub fn walk(config: &Config) -> Result<Vec<Node>> {
     let mut nodes = Vec::new();
 
     let mut builder = WalkBuilder::new(&config.root);
@@ -27,7 +26,19 @@ pub fn walk(config: &Config) -> Result<Vec<PathBuf>> {
 
     for entry in walker {
         let entry = entry?;
-        nodes.push(entry.path().to_path_buf());
+        let path = entry.path();
+
+        // skip the root itself
+        if path == config.root {
+            continue;
+        }
+
+        let is_dir = entry.file_type().map(|f| f.is_dir()).unwrap_or(false);
+
+        nodes.push(Node {
+            path: path.to_path_buf(),
+            is_dir,
+        });
     }
 
     Ok(nodes)
