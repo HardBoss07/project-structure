@@ -6,6 +6,14 @@ use std::path::PathBuf;
 pub struct Cli {
     /// Root path of the project
     path: Option<PathBuf>,
+
+    /// Include hidden files and directories
+    #[arg(long)]
+    pub include_hidden: bool,
+
+    /// Do not use .gitignore rules
+    #[arg(long)]
+    pub no_git: bool,
 }
 
 impl Cli {
