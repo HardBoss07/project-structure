@@ -1,7 +1,7 @@
 use crate::config::Config;
 use anyhow::Result;
-use ignore::WalkBuilder;
 use std::path::PathBuf;
+use ignore::{WalkBuilder, overrides::{OverrideBuilder}};
 
 pub fn walk(config: &Config) -> Result<Vec<PathBuf>> {
     let mut paths = Vec::new();
@@ -13,6 +13,14 @@ pub fn walk(config: &Config) -> Result<Vec<PathBuf>> {
         builder.git_ignore(true).git_global(true).git_exclude(true);
     } else {
         builder.git_ignore(false).git_global(false).git_exclude(false);
+    }
+
+    if !config.exclude_patterns.is_empty() {
+        let mut overrides = OverrideBuilder::new(&config.root);
+        for pattern in &config.exclude_patterns {
+            overrides.add(&format!("!{}", pattern))?;
+        }
+        builder.overrides(overrides.build()?);
     }
 
     let walker = builder.build();

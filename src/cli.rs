@@ -14,6 +14,10 @@ pub struct Cli {
     /// Do not use .gitignore rules
     #[arg(long)]
     pub no_git: bool,
+
+    /// Space-seperated exclude patterns (gitignore-style)
+    #[arg(long)]
+    pub exclude: Option<String>,
 }
 
 impl Cli {
