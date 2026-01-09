@@ -1,7 +1,7 @@
 use clap::{Parser, ValueEnum};
 use std::path::PathBuf;
 
-#[derive(Parser)]
+#[derive(Parser, Clone)]
 #[command(name = "project-structure")]
 pub struct Cli {
     /// Root path of the project
@@ -30,6 +30,10 @@ pub struct Cli {
     /// Filter for just files or directories
     #[arg(long, value_enum)]
     pub filter: Option<Filter>,
+
+    /// Output written to file instead of terminal
+    #[arg(short, long, num_args(0..=1), require_equals(true))]
+    pub output: Option<Option<PathBuf>>,
 }
 
 #[derive(Clone, ValueEnum)]
