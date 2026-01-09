@@ -2,6 +2,12 @@
 name = "project-structure"
 version = "0.1.0"
 edition = "2024"
+description = "Generate an ASCII Representation of a project youre working on."
+repository = "https://github.com/HardBoss07/project-structure"
+license = "MIT"
+keywords = ["structure", "ascii"]
+categories = ["command-line-utilities", "ascii"]
+readme = "README.md"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
