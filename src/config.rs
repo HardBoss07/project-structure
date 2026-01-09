@@ -1,4 +1,4 @@
-use crate::cli::Cli;
+use crate::{cli::{Cli, SortBy}, node::Node};
 use std::path::PathBuf;
 
 pub struct Config {
@@ -6,6 +6,8 @@ pub struct Config {
     pub include_hidden: bool,
     pub use_gitignore: bool,
     pub exclude_patterns: Vec<String>,
+    pub depth: Option<usize>,
+    pub sort: SortBy,
 }
 
 impl From<Cli> for Config {
@@ -23,6 +25,18 @@ impl From<Cli> for Config {
             include_hidden: cli.include_hidden,
             use_gitignore: !cli.no_git,
             exclude_patterns: patterns,
+            depth: cli.depth,
+            sort: cli.sort,
+        }
+    }
+}
+
+
+impl Config {
+    pub fn sort_nodes(&self, nodes: &mut Vec<Node>) {
+        match self.sort {
+            SortBy::Name => nodes.sort_by_key(|n| n.path.clone()),
+            SortBy::Type => nodes.sort_by_key(|n| !n.is_dir),
         }
     }
 }

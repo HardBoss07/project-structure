@@ -8,6 +8,10 @@ pub fn walk(config: &Config) -> Result<Vec<Node>> {
     let mut builder = WalkBuilder::new(&config.root);
     builder.hidden(!config.include_hidden);
 
+    if let Some(depth) = config.depth {
+        builder.max_depth(Some(depth));
+    }
+
     if config.use_gitignore {
         builder.git_ignore(true).git_global(true).git_exclude(true);
     } else {
