@@ -29,7 +29,14 @@ pub fn build(nodes: &[Node], config: &Config) -> TreeNode {
         children: Vec::new(),
     };
 
-    for node in nodes {
+    // sort nodes by path length so parents are handled first
+    let mut sorted_nodes: Vec<&Node> = nodes.iter().collect();
+    sorted_nodes.sort_by_key(|n| n.path.components().count());
+
+
+    // attach children recursively
+    for node in sorted_nodes {
+        let parent_path = node.path.parent();
         if let Some(parent) = node.path.parent() {
             if parent == config.root {
                 if let Some(child) = map.remove(&node.path) {
