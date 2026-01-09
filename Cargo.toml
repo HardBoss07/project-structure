@@ -6,7 +6,7 @@ description = "Generate an ASCII Representation of a project youre working on."
 repository = "https://github.com/HardBoss07/project-structure"
 license = "MIT"
 keywords = ["structure", "ascii"]
-categories = ["command-line-utilities", "ascii"]
+categories = ["command-line-utilities", "development-tools::debugging"]
 readme = "README.md"
 
 [dependencies]
