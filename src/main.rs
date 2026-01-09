@@ -6,6 +6,7 @@ mod config;
 mod walker;
 mod node;
 mod tree;
+mod render;
 
 use cli::Cli;
 use config::Config;
@@ -17,13 +18,10 @@ fn main() -> Result<()> {
     let mut nodes = walker::walk(&config)?;
     config.sort_nodes(&mut nodes);
 
-    let _tree = tree::build(&nodes, &config);
+    let tree = tree::build(&nodes, &config);
+    let output = render::ascii(&tree);
 
-    println!(
-        "Project root: {} ({} entries)",
-        config.root.display(),
-        nodes.len()
-    );
+    println!("{}", output);
 
     Ok(())
 }

@@ -10,41 +10,47 @@ pub struct TreeNode {
 }
 
 pub fn build(nodes: &[Node], config: &Config) -> TreeNode {
-    let mut map: HashMap<PathBuf, TreeNode> = HashMap::new();
+    let mut node_map: HashMap<PathBuf, &Node> = nodes.iter().map(|n| (n.path.clone(), n)).collect();
+    let mut children_map: HashMap<PathBuf, Vec<PathBuf>> = HashMap::new();
 
+    // 1. Map parent -> child paths
     for node in nodes {
-        map.insert(
-            node.path.clone(),
-            TreeNode {
-                path: node.path.clone(),
-                is_dir: node.is_dir,
-                children: Vec::new(),
-            },
-        );
-    }
-
-    let mut root = TreeNode {
-        path: config.root.clone(),
-        is_dir: true,
-        children: Vec::new(),
-    };
-
-    // sort nodes by path length so parents are handled first
-    let mut sorted_nodes: Vec<&Node> = nodes.iter().collect();
-    sorted_nodes.sort_by_key(|n| n.path.components().count());
-
-
-    // attach children recursively
-    for node in sorted_nodes {
-        let parent_path = node.path.parent();
         if let Some(parent) = node.path.parent() {
-            if parent == config.root {
-                if let Some(child) = map.remove(&node.path) {
-                    root.children.push(child);
-                }
-            }
+            children_map
+                .entry(parent.to_path_buf())
+                .or_default()
+                .push(node.path.clone());
         }
     }
 
-    root
+    // 2. Recursive builder
+    fn build_node(
+        path: PathBuf,
+        node_map: &HashMap<PathBuf, &Node>,
+        children_map: &HashMap<PathBuf, Vec<PathBuf>>,
+    ) -> TreeNode {
+        let node_data = node_map.get(&path);
+        
+        let is_dir = node_data.map(|n| n.is_dir).unwrap_or(true);
+        let mut children = Vec::new();
+
+        if is_dir {
+            if let Some(child_paths) = children_map.get(&path) {
+                for cp in child_paths {
+                    children.push(build_node(cp.clone(), node_map, children_map));
+                }
+            }
+        }
+
+        // Sort for consistent output: Dirs first, then name
+        children.sort_by(|a, b| b.is_dir.cmp(&a.is_dir).then(a.path.cmp(&b.path)));
+
+        TreeNode {
+            path,
+            is_dir,
+            children,
+        }
+    }
+
+    build_node(config.root.clone(), &node_map, &children_map)
 }
