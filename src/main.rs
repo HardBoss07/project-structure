@@ -3,10 +3,10 @@ use clap::Parser;
 
 mod cli;
 mod config;
-mod walker;
 mod node;
-mod tree;
 mod render;
+mod tree;
+mod walker;
 
 use cli::Cli;
 use config::Config;

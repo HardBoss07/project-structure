@@ -30,7 +30,7 @@ pub fn build(nodes: &[Node], config: &Config) -> TreeNode {
         children_map: &HashMap<PathBuf, Vec<PathBuf>>,
     ) -> TreeNode {
         let node_data = node_map.get(&path);
-        
+
         let is_dir = node_data.map(|n| n.is_dir).unwrap_or(true);
         let mut children = Vec::new();
 

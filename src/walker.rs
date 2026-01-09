@@ -15,7 +15,10 @@ pub fn walk(config: &Config) -> Result<Vec<Node>> {
     if config.use_gitignore {
         builder.git_ignore(true).git_global(true).git_exclude(true);
     } else {
-        builder.git_ignore(false).git_global(false).git_exclude(false);
+        builder
+            .git_ignore(false)
+            .git_global(false)
+            .git_exclude(false);
     }
 
     if !config.exclude_patterns.is_empty() {

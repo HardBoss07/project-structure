@@ -1,4 +1,7 @@
-use crate::{cli::{Cli, Filter, SortBy}, node::Node};
+use crate::{
+    cli::{Cli, Filter, SortBy},
+    node::Node,
+};
 use std::path::PathBuf;
 
 pub struct Config {
@@ -32,7 +35,6 @@ impl From<Cli> for Config {
         }
     }
 }
-
 
 impl Config {
     pub fn sort_nodes(&self, nodes: &mut Vec<Node>) {

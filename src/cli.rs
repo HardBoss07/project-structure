@@ -32,7 +32,6 @@ pub struct Cli {
     pub filter: Option<Filter>,
 }
 
-
 #[derive(Clone, ValueEnum)]
 pub enum Filter {
     All,

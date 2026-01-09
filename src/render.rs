@@ -7,14 +7,23 @@ pub fn ascii(root: &TreeNode, filter: &Filter) -> String {
     lines.join("\n")
 }
 
-fn render_node(node: &TreeNode, prefix: &str, is_last: bool, lines: &mut Vec<String>, is_root: bool, filter: &Filter) {
+fn render_node(
+    node: &TreeNode,
+    prefix: &str,
+    is_last: bool,
+    lines: &mut Vec<String>,
+    is_root: bool,
+    filter: &Filter,
+) {
     match filter {
         Filter::Files if node.is_dir => return,
         Filter::Dirs if !node.is_dir => return,
         _ => {}
     }
 
-    let name = node.path.file_name()
+    let name = node
+        .path
+        .file_name()
         .map(|s| s.to_string_lossy())
         .unwrap_or_else(|| node.path.to_string_lossy());
 
@@ -28,7 +37,7 @@ fn render_node(node: &TreeNode, prefix: &str, is_last: bool, lines: &mut Vec<Str
 
     // CRITICAL FIX: Determine the prefix for the NEXT level
     let next_prefix = if is_root {
-        "".to_string() 
+        "".to_string()
     } else {
         format!("{}{}", prefix, if is_last { "    " } else { "│   " })
     };
