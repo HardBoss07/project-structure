@@ -26,6 +26,18 @@ pub struct Cli {
     /// Sort Results flag
     #[arg(long, value_enum, default_value = "name")]
     pub sort: SortBy,
+
+    /// Filter for just files or directories
+    #[arg(long, value_enum)]
+    pub filter: Option<Filter>,
+}
+
+
+#[derive(Clone, ValueEnum)]
+pub enum Filter {
+    All,
+    Files,
+    Dirs,
 }
 
 #[derive(Clone, ValueEnum)]

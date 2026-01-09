@@ -1,4 +1,4 @@
-use crate::{cli::{Cli, SortBy}, node::Node};
+use crate::{cli::{Cli, Filter, SortBy}, node::Node};
 use std::path::PathBuf;
 
 pub struct Config {
@@ -8,6 +8,7 @@ pub struct Config {
     pub exclude_patterns: Vec<String>,
     pub depth: Option<usize>,
     pub sort: SortBy,
+    pub filter: Filter,
 }
 
 impl From<Cli> for Config {
@@ -27,6 +28,7 @@ impl From<Cli> for Config {
             exclude_patterns: patterns,
             depth: cli.depth,
             sort: cli.sort,
+            filter: cli.filter.unwrap_or(Filter::All),
         }
     }
 }

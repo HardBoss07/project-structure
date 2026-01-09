@@ -19,7 +19,7 @@ fn main() -> Result<()> {
     config.sort_nodes(&mut nodes);
 
     let tree = tree::build(&nodes, &config);
-    let output = render::ascii(&tree);
+    let output = render::ascii(&tree, &config.filter);
 
     println!("{}", output);
 
