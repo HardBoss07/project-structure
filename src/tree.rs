@@ -10,7 +10,7 @@ pub struct TreeNode {
 }
 
 pub fn build(nodes: &[Node], config: &Config) -> TreeNode {
-    let mut node_map: HashMap<PathBuf, &Node> = nodes.iter().map(|n| (n.path.clone(), n)).collect();
+    let node_map: HashMap<PathBuf, &Node> = nodes.iter().map(|n| (n.path.clone(), n)).collect();
     let mut children_map: HashMap<PathBuf, Vec<PathBuf>> = HashMap::new();
 
     // 1. Map parent -> child paths

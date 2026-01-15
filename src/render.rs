@@ -21,11 +21,15 @@ fn render_node(
         _ => {}
     }
 
-    let name = node
+    let mut name = node
         .path
         .file_name()
-        .map(|s| s.to_string_lossy())
-        .unwrap_or_else(|| node.path.to_string_lossy());
+        .map(|s| s.to_string_lossy().to_string())
+        .unwrap_or_else(|| node.path.to_string_lossy().to_string());
+
+    if node.is_dir {
+        name.push('/');
+    }
 
     if is_root {
         // Just print the root name (e.g., ".")
@@ -42,7 +46,7 @@ fn render_node(
         format!("{}{}", prefix, if is_last { "    " } else { "│   " })
     };
 
-    let children_to_render = node.children.iter().filter(|c| match filter {
+    let _children_to_render = node.children.iter().filter(|c| match filter {
         Filter::Files => !c.is_dir,
         Filter::Dirs => c.is_dir,
         Filter::All => true,
