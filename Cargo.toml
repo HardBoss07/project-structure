@@ -1,6 +1,6 @@
 [package]
 name = "project-structure"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Generate an ASCII Representation of a project youre working on."
 repository = "https://github.com/HardBoss07/project-structure"
