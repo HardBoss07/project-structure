@@ -3,7 +3,26 @@
 A Rust-based command-line tool to generate an ASCII tree of a project directory.  
 Supports filtering, sorting, `.gitignore` rules, and output to Markdown files.
 
-You can view an example of this project in [Example.md](./Example.md).
+---
+
+## Example
+
+```bash
+project-structure/
+├── src/
+│   ├── cli.rs
+│   ├── config.rs
+│   ├── main.rs
+│   ├── node.rs
+│   ├── render.rs
+│   ├── tree.rs
+│   └── walker.rs
+├── Cargo.lock
+├── Cargo.toml
+├── Example.md
+├── LICENSE
+└── README.md
+```
 
 ---
 

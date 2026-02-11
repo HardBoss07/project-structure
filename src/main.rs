@@ -1,5 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
+use std::env;
 use std::fs;
 use std::path::PathBuf;
 
@@ -21,7 +22,18 @@ fn main() -> Result<()> {
     config.sort_nodes(&mut nodes);
 
     let tree = tree::build(&nodes, &config);
-    let output = render::ascii(&tree, &config.filter);
+
+    // Get the current directory name to use as the root display name
+    let current_dir = env::current_dir()?;
+    let root_name = current_dir
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or("parentdirectory"); // Fallback name if current_dir has no file_name
+
+    let mut modified_tree = tree;
+    modified_tree.path = PathBuf::from(format!("{}/", root_name));
+
+    let output = render::ascii(&modified_tree, &config.filter);
 
     let file_path: Option<PathBuf> = match &cli.output {
         Some(Some(path)) => Some(path.clone()),
