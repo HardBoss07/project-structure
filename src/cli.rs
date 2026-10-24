@@ -34,19 +34,39 @@ pub struct Cli {
     /// Output written to file instead of terminal
     #[arg(short, long, num_args(0..=1), require_equals(true))]
     pub output: Option<Option<PathBuf>>,
+
+    /// Count lines or bytes for files and folders
+    #[arg(long, num_args(0..=1), default_missing_value = "lines", value_enum)]
+    pub count: Option<CountMode>,
+
+    /// Compact display mode with optional ascii connectors
+    #[arg(short, long, num_args(0..=1), default_missing_value = "compact", value_enum)]
+    pub minimize: Option<MinimizeMode>,
 }
 
-#[derive(Clone, ValueEnum)]
+#[derive(Clone, ValueEnum, PartialEq, Eq)]
 pub enum Filter {
     All,
     Files,
     Dirs,
 }
 
-#[derive(Clone, ValueEnum)]
+#[derive(Clone, ValueEnum, PartialEq, Eq)]
 pub enum SortBy {
     Name,
     Type,
+}
+
+#[derive(Clone, ValueEnum, PartialEq, Eq, Copy)]
+pub enum CountMode {
+    Lines,
+    Bytes,
+}
+
+#[derive(Clone, ValueEnum, PartialEq, Eq, Copy)]
+pub enum MinimizeMode {
+    Compact,
+    Ascii,
 }
 
 impl Cli {
