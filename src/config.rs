@@ -1,5 +1,5 @@
 use crate::{
-    cli::{Cli, Filter, SortBy},
+    cli::{Cli, CountMode, Filter, MinimizeMode, SortBy},
     node::Node,
 };
 use std::path::PathBuf;
@@ -12,6 +12,8 @@ pub struct Config {
     pub depth: Option<usize>,
     pub sort: SortBy,
     pub filter: Filter,
+    pub count: Option<CountMode>,
+    pub minimize: Option<MinimizeMode>,
 }
 
 impl From<Cli> for Config {
@@ -32,6 +34,8 @@ impl From<Cli> for Config {
             depth: cli.depth,
             sort: cli.sort,
             filter: cli.filter.unwrap_or(Filter::All),
+            count: cli.count,
+            minimize: cli.minimize,
         }
     }
 }
