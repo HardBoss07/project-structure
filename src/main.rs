@@ -22,7 +22,6 @@ fn main() -> Result<()> {
 
     let tree = tree::build(&nodes, &config);
 
-    // Resolve the display name from config.root instead of env::current_dir()
     let canonical_root = config
         .root
         .canonicalize()
@@ -41,7 +40,7 @@ fn main() -> Result<()> {
     let mut modified_tree = tree;
     modified_tree.path = PathBuf::from(format!("{}/", root_name));
 
-    let output = render::ascii(&modified_tree, &config.filter);
+    let output = render::ascii(&modified_tree, &config);
 
     let file_path: Option<PathBuf> = match &cli.output {
         Some(Some(path)) => Some(path.clone()),
